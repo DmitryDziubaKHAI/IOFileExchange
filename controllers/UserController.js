@@ -8,16 +8,19 @@ class UserController {
     addUser(req, res) {
         const {username, email, password} = req.body;
         const user = userService.createUser(username, email, password);
-        res.status(201).json({success: true, user});
+        req.session.user = user;
+        res.status(201).json({success: true});
     }
 
     /**
-     * @param {import('express').Request} req
+     * @param {import('express').Request & {session: object}} req
      * @param {import('express').Response} res
      */
     login(req, res) {
-        const {email, password} = req.body;
-        if(userService.login(email, password)) {
+        const {email, password} = req.body
+        const user = userService.login(email, password);
+        if(user) {
+            req.session.user = user;
             res.status(201).json({success: true});
         } else {
             res.status(401).json({success: false});
@@ -25,12 +28,17 @@ class UserController {
     }
 
     /**
-     * @param {import('express').Request} req
+     * @param {import('express').Request & {session: object}} req
      * @param {import('express').Response} res
      */
     logout(req, res) {
-        userService.logout();
-        res.status(201).json({success: true});
+        req.session.destroy(err => {
+            if (err) {
+                res.status(500).json({success: false});
+            } else {
+                res.status(201).json({success: true});
+            }
+        });
     }
 }
 

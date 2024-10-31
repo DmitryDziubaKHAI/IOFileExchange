@@ -11,7 +11,12 @@ class ACLService {
      * @returns {boolean}
      */
     checkRole(user, roles) {
-
+        for (const role of user.roles || []) {
+            if(roles.includes(role)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
 
