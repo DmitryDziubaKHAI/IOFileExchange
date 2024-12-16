@@ -2,4 +2,7 @@
 /node_modules
 /runtime/*
 !/runtime/.gitkeep
+!/runtime/filesDb
+/runtime/filesDb/*
+!/runtime/filesDb/.gitkeep
 /uploads
