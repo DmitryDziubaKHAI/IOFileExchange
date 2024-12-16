@@ -1,3 +1,5 @@
+const uuid = require('uuid');
+const mime = require('mime-types');
 const fs = require('fs');
 const path = require('path');
 const File = require('../models/File');
@@ -16,14 +18,19 @@ class FileService {
      * @returns {File}
      */
     saveFile(file) {
-        const filePath = path.join(this.uploadDir, file.originalname);
+        const filePath = path.join(this.uploadDir, uuid.v4() + '.' + mime.extension(file.mimetype));
         fs.writeFileSync(filePath, file.buffer);
+        const fileModel = new File();
 
-        return new File(
-            file.originalname,
-            filePath,
-            file.size
-        );
+        fileModel.userId = file.userId;
+        fileModel.filename = file.originalname;
+        fileModel.filepath = filePath;
+        fileModel.size = file.size;
+        fileModel.password = file.password;
+        fileModel.hashPassword();
+
+        FileRepository.saveFile(fileModel)
+        return fileModel;
     }
 
     /**

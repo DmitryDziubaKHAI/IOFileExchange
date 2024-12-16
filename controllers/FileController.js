@@ -2,7 +2,7 @@ const fileService = require('../services/FileService');
 
 class FileController {
     /**
-     * @param {import('express').Request & {file: UploadFileDescription}} req
+     * @param {import('express').Request & {file: UploadFileDescription} & {session: object}} req
      * @param {import('express').Response} res
      */
     uploadFile(req, res) {
