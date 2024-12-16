@@ -15,12 +15,21 @@ class File {
         this.createdAt = createdAt;
     }
 
+    /**
+     * The method creates an object from attributes
+     * @param {object} attributes
+     * @returns {File}
+     */
     static fromAttributes(attributes) {
         const file = new File();
         file.setAttributes(attributes);
         return file;
     }
 
+    /**
+     * The method sets attributes to the object
+     * @param {object} attributes attribute => value
+     */
     setAttributes(attributes) {
         for (const attributesKey in attributes) {
             if (attributes.hasOwnProperty(attributesKey)) {
@@ -29,6 +38,12 @@ class File {
         }
     }
 
+    /**
+     * The method casts value according to an attribute name
+     * @param {string} attributeName
+     * @param {*} attributeValue
+     * @returns {*}
+     */
     castAttributeValue(attributeName, attributeValue) {
         const map = {
             id: (v) => Number(v),

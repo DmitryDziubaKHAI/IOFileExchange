@@ -2,6 +2,12 @@ const File = require('../models/File');
 const path = require("path");
 const fs = require("fs");
 
+/**
+ * @typedef {object} UserDB
+ * @property {Object<number,object>} data fileId => attributes
+ * @property {{count: number, lastId: number}} meta
+ */
+
 class FileRepository {
     /**
      * @type {string}
@@ -13,11 +19,19 @@ class FileRepository {
         this.dir = path.join(__dirname, '..', 'runtime', 'filesDb');
     }
 
+    /**
+     * @param {string} name
+     * @param {object} index
+     */
     writeIndex(name, index) {
         const indexFile = path.join(this.dir, `index_${name}.json`);
         fs.writeFileSync(indexFile, JSON.stringify(index, null, 2));
     }
 
+    /**
+     * @param {string} name
+     * @returns {object|null}
+     */
     readIndex(name) {
         const indexFile = path.join(this.dir, `index_${name}.json`);
         if (fs.existsSync(indexFile)) {
@@ -27,11 +41,19 @@ class FileRepository {
         return null;
     }
 
+    /**
+     * @param {number} id
+     * @param {UserDB} db
+     */
     writeUserDb(id, db) {
         const dbFile = path.join(this.dir, `file_${id}.json`);
         fs.writeFileSync(dbFile, JSON.stringify(db, null, 2));
     }
 
+    /**
+     * @param {number} id
+     * @returns {UserDB}
+     */
     readUserDb(id) {
         const dbFile = path.join(this.dir, `file_${id}.json`);
         if (fs.existsSync(dbFile)) {
@@ -87,7 +109,7 @@ class FileRepository {
      */
     getFilesListByUserId(id) {
         const db = this.readUserDb(id);
-        return Array.values(db.data);
+        return Array.values(db.data).map(attributes => File.fromAttributes(attributes));
     }
 }
 
