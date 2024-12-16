@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const File = require('../models/File');
+const FileRepository = require('repositories/FileRepository');
 
 class FileService {
     constructor() {
@@ -26,48 +27,19 @@ class FileService {
     }
 
     /**
+     * @param {number} id
      * @returns {File[]}
      */
-    getAllFiles() {
-        const files = fs.readdirSync(this.uploadDir);
+    getFilesListByUserId(id) {
 
-        const result = [];
-
-        for (const filename of files) {
-            if (filename === '.gitkeep') {
-                continue;
-            }
-            const filePath = path.join(this.uploadDir, filename);
-            const stats = fs.statSync(filePath);
-
-            result.push(new File(
-                filename,
-                filePath,
-                stats.size
-            ));
-        }
-
-        return result;
     }
 
     /**
-     * @param {string} filename
+     * @param {number} id
      * @returns {null|File}
      */
-    getFile(filename) {
-        const filePath = path.join(this.uploadDir, filename);
+    getFileById(id) {
 
-        if (!fs.existsSync(filePath)) {
-            return null;
-        }
-
-        const stats = fs.statSync(filePath);
-
-        return new File(
-            filename,
-            filePath,
-            stats.size
-        );
     }
 }
 

@@ -1,4 +1,5 @@
 /**
+ * @property {number} id
  * @property {string} username
  * @property {string} email
  * @property {string} password

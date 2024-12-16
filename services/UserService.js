@@ -3,6 +3,18 @@ const path = require('path');
 const User = require('../models/User');
 
 class UserService {
+    /**
+     * @type {User[]}
+     * @protected
+     */
+    users;
+
+    /**
+     * @type {string}
+     * @protected
+     */
+    usersFile;
+
     constructor() {
         this.usersFile = path.join(__dirname, '..', 'runtime', 'users.json');
         this.users = this.loadUsers();
@@ -21,6 +33,7 @@ class UserService {
         }
 
         const newUser = new User();
+        newUser.id = this.users.length;
         newUser.username = username;
         newUser.email = email;
         newUser.password = this.hashPassword(password);
