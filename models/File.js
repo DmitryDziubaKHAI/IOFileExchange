@@ -1,4 +1,5 @@
 /**
+ * @property {number} id
  * @property {string} filename
  * @property {string} filepath
  * @property {number} size
@@ -12,6 +13,30 @@ class File {
         this.filepath = filepath;
         this.size = size;
         this.createdAt = createdAt;
+    }
+
+    static fromAttributes(attributes) {
+        const file = new File();
+        file.setAttributes(attributes);
+        return file;
+    }
+
+    setAttributes(attributes) {
+        for (const attributesKey in attributes) {
+            if (attributes.hasOwnProperty(attributesKey)) {
+                this[attributesKey] = this.castAttributeValue(attributesKey, attributes[attributesKey]);
+            }
+        }
+    }
+
+    castAttributeValue(attributeName, attributeValue) {
+        const map = {
+            id: (v) => Number(v),
+            size: (v) => Number(v),
+            userId: (v) => Number(v),
+            createdAt: (v) => Date.parse(v)
+        }
+        return map[attributeName] ? map[attributeName].call(this, attributeValue) : attributeValue;
     }
 
     /**
