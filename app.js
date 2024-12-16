@@ -53,10 +53,13 @@ app.post(
     '/upload',
     upload.single('file'),
     /**
-     * @param {import('express').Request & {file: UploadFileDescription}} req
+     * @param {import('express').Request & {file: UploadFileDescription} & {session: object}} req
      * @param {import('express').Response} res
      */
     (req, res) => {
+        const {password} = req.body
+        req.file.password = password;
+        req.file.userId = req.session.id;
         return fileController.uploadFile(req, res);
     }
 );
