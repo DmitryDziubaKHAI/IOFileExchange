@@ -11,11 +11,11 @@ class FileController {
     }
 
     /**
-     * @param {import('express').Request} req
+     * @param {import('express').Request & {session: object}} req
      * @param {import('express').Response} res
      */
     listFiles(req, res) {
-        const files = fileService.getAllFiles();
+        const files = fileService.getFilesListByUserId(req.session.id);
         res.status(200).json(files);
     }
 
@@ -24,7 +24,10 @@ class FileController {
      * @param {import('express').Response} res
      */
     downloadFile(req, res) {
-        const file = fileService.getFile(req.params.filename);
+        /**
+         * @todo
+         */
+        const file = null;
         if (file) {
             res.download(file.filepath);
         } else {

@@ -11,10 +11,31 @@ const userController = require('./controllers/UserController');
 const app = express();
 const upload = multer();
 
+/**
+ * @todo config
+ * @type {string}
+ */
 const sessionKey = 'MySuperKey@todo-config';
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+
+/**
+ * @todo config
+ */
+app.use((req, res, next) => {
+    const auth = {login: 'test12345', password: 'test12345'}
+
+    const b64auth = (req.headers.authorization || '').split(' ')[1] || ''
+    const [login, password] = Buffer.from(b64auth, 'base64').toString().split(':')
+
+    if (login && password && login === auth.login && password === auth.password) {
+        return next()
+    }
+
+    res.set('WWW-Authenticate', 'Basic realm="401"')
+    res.status(401).send('Authentication required.');
+})
 
 app.use(logger('dev'));
 app.use(express.json());
