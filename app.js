@@ -58,7 +58,7 @@ app.post(
      */
     (req, res) => {
         const {password} = req.body
-        req.file.password = password || 'empty';
+        req.file.password = password;
         req.file.userId = req.session.user.id;
         req.file.originalname = Buffer.from(req.file.originalname, 'latin1').toString('utf8');
         return fileController.uploadFile(req, res);
