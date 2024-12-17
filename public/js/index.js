@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (response.ok) {
             const data = await response.json();
             fileList.innerHTML = data.map(
-                file => `<li>${file.filename} (Size: ${file.size} bytes) <a href="#">Download</a></li>`
+                file => `<li>${file.filename} (Size: ${file.size} bytes) <a href="${file.downloadPage}">Download</a></li>`
             ).join('');
         }
     }

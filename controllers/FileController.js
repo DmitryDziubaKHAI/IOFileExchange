@@ -16,7 +16,10 @@ class FileController {
      */
     listFiles(req, res) {
         const files = fileService.getFilesListByUserId(req.session.user.id);
-        res.status(200).json(files);
+        res.status(200).json(files.map(file => {
+            file.downloadPage = '/downloadPage/' + file.id;
+            return file;
+        }));
     }
 
     /**
