@@ -73,9 +73,22 @@ app.get(
 );
 
 app.get(
-    '/download/:filename',
+    '/download/:id/:key',
     (req, res) => {
         return fileController.downloadFile(req, res);
+    }
+);
+
+app.get(
+    '/download/:id',
+    (req, res) => {
+        return fileController.downloadPage(req, res);
+    }
+);
+app.post(
+    '/download/:id',
+    (req, res) => {
+        return fileController.downloadPage(req, res);
     }
 );
 

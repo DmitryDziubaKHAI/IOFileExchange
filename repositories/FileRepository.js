@@ -94,7 +94,7 @@ class FileRepository {
     getFileById(id) {
         const index = this.readIndex('file_id_user_id') || {};
         const userId = index[id];
-        if(!userId) {
+        if(typeof userId !== 'number') {
             return null;
         }
         const db = this.readUserDb(userId);

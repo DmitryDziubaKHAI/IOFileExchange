@@ -67,7 +67,7 @@ class File {
      * The method updates current password field with a hash of raw password
      */
     async hashPassword() {
-        this.password = await bcrypt.hash(this.password, 10);
+        this.password = await bcrypt.hash(this.password || 'empty', 10);
     }
 
     /**
@@ -76,7 +76,7 @@ class File {
      * @returns {Promise<boolean>} whether the password is correct
      */
     async checkPassword(password) {
-        return await bcrypt.compare(password, this.password);
+        return await bcrypt.compare(password || 'empty', this.password);
     }
 
     /**
