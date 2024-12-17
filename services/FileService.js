@@ -3,7 +3,7 @@ const mime = require('mime-types');
 const fs = require('fs');
 const path = require('path');
 const File = require('../models/File');
-const FileRepository = require('repositories/FileRepository');
+const FileRepository = require('./../repositories/FileRepository');
 
 class FileService {
     constructor() {
@@ -17,7 +17,7 @@ class FileService {
      * @param {UploadFileDescription} file
      * @returns {File}
      */
-    saveFile(file) {
+    async saveFile(file) {
         const filePath = path.join(this.uploadDir, uuid.v4() + '.' + mime.extension(file.mimetype));
         fs.writeFileSync(filePath, file.buffer);
         const fileModel = new File();
@@ -27,7 +27,7 @@ class FileService {
         fileModel.filepath = filePath;
         fileModel.size = file.size;
         fileModel.password = file.password;
-        fileModel.hashPassword();
+        await fileModel.hashPassword();
 
         FileRepository.saveFile(fileModel)
         return fileModel;
@@ -38,7 +38,7 @@ class FileService {
      * @returns {File[]}
      */
     getFilesListByUserId(id) {
-
+        return FileRepository.getFilesListByUserId(id);
     }
 
     /**
@@ -46,7 +46,7 @@ class FileService {
      * @returns {null|File}
      */
     getFileById(id) {
-
+        return FileRepository.getFileById(id);
     }
 }
 

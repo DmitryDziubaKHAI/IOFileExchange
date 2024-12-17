@@ -109,7 +109,7 @@ class FileRepository {
      */
     getFilesListByUserId(id) {
         const db = this.readUserDb(id);
-        return Array.values(db.data).map(attributes => File.fromAttributes(attributes));
+        return Object.values(db.data).map(attributes => File.fromAttributes(attributes));
     }
 }
 

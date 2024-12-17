@@ -33,7 +33,7 @@ class UserService {
         }
 
         const newUser = new User();
-        newUser.id = this.users.length;
+        newUser.id = this.users.length + 1;
         newUser.username = username;
         newUser.email = email;
         newUser.password = this.hashPassword(password);
